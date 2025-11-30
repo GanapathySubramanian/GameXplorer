@@ -13,16 +13,22 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    session: async ({ session, user }) => {
-      if (session?.user) {
-        session.user.id = user.id
-        session.user.image = user.image
+    session: async ({ session, token }) => {
+      if (session?.user && token) {
+        session.user.id = token.sub!
+        session.user.image = token.picture as string
       }
       return session
     },
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.sub = user.id
+      }
+      return token
+    },
   },
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   debug: true,
 }
