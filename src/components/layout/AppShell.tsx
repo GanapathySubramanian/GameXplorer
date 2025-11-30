@@ -3,12 +3,15 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
 import SearchBox from "@/components/common/SearchBox";
 import ScrollToTop from "@/components/common/ScrollToTop";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session, status } = useSession();
 
   const isActive = (path: string) => {
     if (path === "/") return pathname === "/";
@@ -123,11 +126,70 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
           </nav>
 
-          {/* Right Column: Search Box */}
-          <div className="flex items-center justify-end">
+          {/* Right Column: Search Box + Auth */}
+          <div className="flex items-center justify-end gap-3">
             <div className="w-80 max-w-full">
               <SearchBox />
             </div>
+            
+            {/* Authentication UI */}
+            {status === "loading" ? (
+              <div className="w-9 h-9 flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-neutral-600 border-t-white rounded-full animate-spin" />
+              </div>
+            ) : session ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="w-9 h-9 rounded-full overflow-hidden hover:opacity-90 transition-opacity ring-2 ring-neutral-700 hover:ring-neutral-600"
+                  aria-label="User menu"
+                >
+                  {session.user?.image ? (
+                    <img 
+                      src={session.user.image} 
+                      alt={session.user.name || "User"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold text-sm">
+                      {session.user?.name?.charAt(0).toUpperCase() || session.user?.email?.charAt(0).toUpperCase() || "U"}
+                    </div>
+                  )}
+                </button>
+                
+                {/* User Dropdown Menu */}
+                {userMenuOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setUserMenuOpen(false)}
+                    />
+                    <div className="absolute right-0 mt-2 w-64 bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl z-50 overflow-hidden">
+                      <div className="p-4 border-b border-neutral-800">
+                        <p className="font-semibold text-white truncate">{session.user?.name || "User"}</p>
+                        <p className="text-sm text-neutral-400 truncate">{session.user?.email}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setUserMenuOpen(false);
+                          signOut();
+                        }}
+                        className="w-full px-4 py-3 text-left hover:bg-neutral-800 transition-colors text-red-400 hover:text-red-300"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => signIn("google")}
+                className="px-4 py-2 bg-white text-black rounded-lg font-medium text-sm hover:bg-neutral-200 transition-colors whitespace-nowrap"
+              >
+                Sign In
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -170,7 +232,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-col p-4 gap-2">
+          <nav className="flex flex-col p-4 gap-2 flex-1">
             <Link
               href="/"
               className={`px-4 py-3 rounded-lg transition-colors ${
@@ -216,6 +278,56 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               Wishlist
             </Link>
           </nav>
+
+          {/* Mobile Auth Section */}
+          <div className="p-4 border-t border-neutral-800">
+            {status === "loading" ? (
+              <div className="flex items-center justify-center py-3">
+                <div className="w-5 h-5 border-2 border-neutral-600 border-t-white rounded-full animate-spin" />
+              </div>
+            ) : session ? (
+              <div>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-neutral-700">
+                    {session.user?.image ? (
+                      <img 
+                        src={session.user.image} 
+                        alt={session.user.name || "User"}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
+                        {session.user?.name?.charAt(0).toUpperCase() || session.user?.email?.charAt(0).toUpperCase() || "U"}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-white truncate text-sm">{session.user?.name || "User"}</p>
+                    <p className="text-xs text-neutral-400 truncate">{session.user?.email}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    signOut();
+                  }}
+                  className="w-full px-4 py-2 bg-neutral-800 hover:bg-neutral-700 rounded-lg transition-colors text-red-400 hover:text-red-300 text-sm font-medium"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  signIn("google");
+                }}
+                className="w-full px-4 py-2 bg-white text-black rounded-lg font-medium text-sm hover:bg-neutral-200 transition-colors"
+              >
+                Sign In with Google
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

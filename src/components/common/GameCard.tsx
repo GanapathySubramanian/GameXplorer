@@ -32,7 +32,7 @@ export default function GameCard({
   const platformList = platforms?.map((p) => p.abbreviation).filter(Boolean).slice(0, 3) || [];
   const genreList = genres?.map((g) => g.name).filter(Boolean).slice(0, 2) || [];
   // wishlist hook (app is wrapped with provider in layout)
-  let items: { id: number }[] = [];
+  let items: { gameId: number }[] = [];
   let addItem: any = () => {};
   let removeItem: any = () => {};
   try {
@@ -43,7 +43,7 @@ export default function GameCard({
   } catch (e) {
     // provider not available yet (shouldn't happen once layout wraps provider)
   }
-  const exists = items.find((it) => it.id === id);
+  const exists = items.find((it) => it.gameId === id);
   // vault hook
   let vaultHas = false;
   let vaultAdd: any = () => {};
@@ -71,7 +71,7 @@ export default function GameCard({
               e.preventDefault();
               e.stopPropagation();
               if (exists) removeItem(id);
-              else addItem({ id, name, cover: cover ?? null, status: "wishlist" });
+              else addItem({ id, name, cover: cover ?? null, first_release_date, platforms, genres, total_rating, total_rating_count } as any);
             }}
             title={exists ? "Remove from wishlist" : "Add to wishlist"}
             aria-pressed={!!exists}
@@ -99,7 +99,7 @@ export default function GameCard({
                 // was added to the vault which caused the behavior you observed.
                 // Keep both lists independent so users can keep a game in wishlist
                 // even after adding it to their vault.
-                vaultAdd({ id, name, cover: cover ?? null });
+                vaultAdd({ id, name, cover: cover ?? null, first_release_date, platforms, genres, total_rating, total_rating_count } as any);
               }
             }}
             title={vaultHas ? "Remove from vault" : "Add to vault"}

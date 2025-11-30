@@ -82,19 +82,17 @@ function WishlistVaultActions({ game }: { game: GameDetail }) {
   const wishlist = useWishlist();
   const vault = useVault();
 
-  const inWishlist = wishlist.items.some((i) => i.id === game.id);
+  const inWishlist = wishlist.items.some((i) => i.gameId === game.id);
   const inVault = vault.has(game.id);
 
   const toggleWishlist = () => {
     if (inWishlist) wishlist.removeItem(game.id);
-    else wishlist.addItem({ id: game.id, name: game.name, cover: game.cover ?? null, status: "wishlist" });
+    else wishlist.addItem(game as any);
   };
 
   const toggleVault = () => {
     if (inVault) vault.remove(game.id);
-    else {
-      vault.add({ id: game.id, name: game.name, cover: game.cover ?? null });
-    }
+    else vault.add(game as any);
   };
 
   return (

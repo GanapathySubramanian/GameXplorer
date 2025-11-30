@@ -23,7 +23,7 @@ export default function Vault() {
 				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
 								{items.map((it) => (
 									<div key={it.id} className="relative">
-										<GameCard id={it.id} name={it.name} cover={it.cover} />
+										<GameCard id={it.gameData.id} name={it.gameData.name} cover={it.gameData.cover} />
 									</div>
 								))}
 				</div>

@@ -22,8 +22,8 @@ export default function WishlistPage() {
     } as Record<WishlistStatus, typeof items>;
   }, [items]);
 
-  const onDragStart = (e: React.DragEvent, id: number) => {
-    e.dataTransfer.setData("text/plain", String(id));
+  const onDragStart = (e: React.DragEvent, gameId: number) => {
+    e.dataTransfer.setData("text/plain", String(gameId));
     e.dataTransfer.effectAllowed = "move";
   };
 
@@ -31,9 +31,9 @@ export default function WishlistPage() {
 
   const onDropTo = (e: React.DragEvent, status: WishlistStatus) => {
     e.preventDefault();
-    const id = Number(e.dataTransfer.getData("text/plain"));
-    if (!id) return;
-    updateStatus(id, status);
+    const gameId = Number(e.dataTransfer.getData("text/plain"));
+    if (!gameId) return;
+    updateStatus(gameId, status);
   };
 
   return (
@@ -62,15 +62,15 @@ export default function WishlistPage() {
                   <div
                     key={it.id}
                     draggable
-                    onDragStart={(e) => onDragStart(e, it.id)}
-                    onClick={() => router.push(`/gamedetails?id=${it.id}`)}
+                    onDragStart={(e) => onDragStart(e, it.gameId)}
+                    onClick={() => router.push(`/gamedetails?id=${it.gameId}`)}
                     className="relative flex items-center gap-4 p-3 rounded-md bg-neutral-950 border border-neutral-800 cursor-grab hover:shadow-lg"
                   >
                     <button
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        removeItem(it.id);
+                        removeItem(it.gameId);
                       }}
                       title="Remove"
                       className="absolute right-2 top-2 w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center"
@@ -80,15 +80,15 @@ export default function WishlistPage() {
                       </svg>
                     </button>
 
-                    {it.cover?.url ? (
+                    {it.gameData.cover?.url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={it.cover.url} alt={it.name} className="w-20 sm:w-24 h-24 sm:h-28 object-cover rounded" />
+                      <img src={it.gameData.cover.url} alt={it.gameData.name} className="w-20 sm:w-24 h-24 sm:h-28 object-cover rounded" />
                     ) : (
                       <div className="w-20 sm:w-24 h-24 sm:h-28 bg-neutral-800 rounded" />
                     )}
 
                     <div className="flex-1">
-                      <div className="font-medium text-base sm:text-lg">{it.name}</div>
+                      <div className="font-medium text-base sm:text-lg">{it.gameData.name}</div>
                       <div className="text-xs sm:text-sm text-neutral-400 mt-1">Added {new Date(it.addedAt).toLocaleDateString()}</div>
                     </div>
                   </div>
