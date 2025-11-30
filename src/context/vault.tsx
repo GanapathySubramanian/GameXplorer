@@ -126,7 +126,6 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
           await add(gameData);
         }
         localStorage.removeItem(STORAGE);
-        alert("Successfully imported your games!");
       }
 
       setHasMigrated(true);
@@ -160,7 +159,6 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Error adding to vault:", error);
-        alert("Failed to add game to vault. Please try again.");
       }
     } else {
       // Add to localStorage
@@ -194,7 +192,6 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Error removing from vault:", error);
-        alert("Failed to remove game from vault. Please try again.");
       }
     } else {
       // Remove from localStorage

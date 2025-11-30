@@ -133,7 +133,6 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
           await addItem(gameData, item.status || "wishlist");
         }
         localStorage.removeItem(STORAGE_KEY);
-        alert("Successfully imported your wishlist!");
       }
 
       setHasMigrated(true);
@@ -168,7 +167,6 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Error adding to wishlist:", error);
-        alert("Failed to add game to wishlist. Please try again.");
       }
     } else {
       // Add to localStorage
@@ -204,7 +202,6 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Error removing from wishlist:", error);
-        alert("Failed to remove game from wishlist. Please try again.");
       }
     } else {
       // Remove from localStorage
@@ -236,7 +233,6 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Error updating wishlist status:", error);
-        alert("Failed to update status. Please try again.");
       }
     } else {
       // Update in localStorage
