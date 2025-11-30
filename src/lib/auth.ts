@@ -5,6 +5,7 @@ import { prisma } from "./prisma"
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -15,6 +16,7 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, user }) => {
       if (session?.user) {
         session.user.id = user.id
+        session.user.image = user.image
       }
       return session
     },
@@ -22,4 +24,5 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "database",
   },
+  debug: true,
 }
