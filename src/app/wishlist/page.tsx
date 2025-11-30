@@ -64,7 +64,7 @@ export default function WishlistPage() {
                     draggable
                     onDragStart={(e) => onDragStart(e, it.gameId)}
                     onClick={() => router.push(`/gamedetails?id=${it.gameId}`)}
-                    className="relative flex items-center gap-4 p-3 rounded-md bg-neutral-950 border border-neutral-800 cursor-grab hover:shadow-lg"
+                    className="relative flex items-center gap-4 p-3 rounded-md bg-neutral-950 border border-neutral-800 cursor-grab hover:shadow-lg cursor-pointer"
                   >
                     <button
                       onClick={(e) => {
@@ -73,7 +73,7 @@ export default function WishlistPage() {
                         removeItem(it.gameId);
                       }}
                       title="Remove"
-                      className="absolute right-2 top-2 w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center"
+                      className="absolute right-2 top-2 w-8 h-8 rounded-full bg-black/30 hover:bg-black/50 text-white flex items-center justify-center cursor-pointer"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4">
                         <path strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -100,7 +100,7 @@ export default function WishlistPage() {
       </div>
 
       <div className="mt-6">
-        <button onClick={() => clear()} className="text-sm px-3 py-2 rounded bg-neutral-800/80 text-neutral-100 hover:bg-neutral-700">
+        <button onClick={() => clear()} className="text-sm px-3 py-2 rounded bg-neutral-800/80 text-neutral-100 hover:bg-neutral-700 cursor-pointer">
           Clear wishlist
         </button>
       </div>

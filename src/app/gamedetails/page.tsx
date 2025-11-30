@@ -100,7 +100,7 @@ function WishlistVaultActions({ game }: { game: GameDetail }) {
       <button
         onClick={toggleWishlist}
         aria-pressed={inWishlist}
-        className="rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm hover:bg-neutral-800 flex items-center gap-2"
+        className="rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm hover:bg-neutral-800 flex items-center gap-2 cursor-pointer"
         title={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
       >
         {inWishlist ? (
@@ -118,7 +118,7 @@ function WishlistVaultActions({ game }: { game: GameDetail }) {
       <button
         onClick={toggleVault}
         aria-pressed={inVault}
-        className="rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm hover:bg-neutral-800 flex items-center gap-2"
+        className="rounded-xl border border-neutral-800 bg-neutral-900 px-4 py-2 text-sm hover:bg-neutral-800 flex items-center gap-2 cursor-pointer"
         title={inVault ? "Remove from vault" : "Add to vault (purchased)"}
       >
         {inVault ? (
@@ -335,7 +335,7 @@ function GameDetailsContent() {
                   key={s.url}
                   src={s.url}
                   alt="Screenshot"
-                  className="h-48 w-full rounded-xl border border-neutral-800 object-cover cursor-zoom-in"
+                  className="h-48 w-full rounded-xl border border-neutral-800 object-cover cursor-pointer"
                   loading="lazy"
                 />
               ))}
@@ -388,7 +388,7 @@ function GameDetailsContent() {
                         href={u}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-sm hover:bg-neutral-800"
+                        className="inline-flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-1.5 text-sm hover:bg-neutral-800 cursor-pointer"
                       >
                         {new URL(u).hostname.replace("www.", "")}
                       </a>

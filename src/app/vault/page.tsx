@@ -31,7 +31,7 @@ export default function Vault() {
 
 			{items.length > 0 && (
 				<div className="mt-6">
-					<button onClick={() => clear()} className="text-sm px-3 py-2 rounded bg-neutral-800/80 text-neutral-100 hover:bg-neutral-700">
+					<button onClick={() => clear()} className="text-sm px-3 py-2 rounded bg-neutral-800/80 text-neutral-100 hover:bg-neutral-700 cursor-pointer">
 						Clear vault
 					</button>
 				</div>
