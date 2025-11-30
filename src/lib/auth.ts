@@ -19,9 +19,6 @@ export const authOptions: NextAuthOptions = {
       return session
     },
   },
-  pages: {
-    signIn: "/",
-  },
   session: {
     strategy: "database",
   },
