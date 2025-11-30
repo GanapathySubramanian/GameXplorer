@@ -74,7 +74,12 @@ export default function Search() {
         const data = await response.json();
         
         if (append) {
-          setGames((prev) => [...prev, ...data]);
+          setGames((prev) => {
+            // Deduplicate by game ID to prevent duplicate key errors
+            const existingIds = new Set(prev.map(g => g.id));
+            const newGames = data.filter((g: Game) => !existingIds.has(g.id));
+            return [...prev, ...newGames];
+          });
         } else {
           setGames(data);
         }

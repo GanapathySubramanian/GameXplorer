@@ -173,21 +173,23 @@ export default function GameDetails() {
 
   // fetch similar games (batch) when available
   useEffect(() => {
-    const ids = (game as any)?.similar_games;
-    if (!Array.isArray(ids) || ids.length === 0) {
-      setSimilarGames([]);
-      return;
-    }
-    const fetchIds = ids.slice(0, 12); // limit to 12
+    // ask the backend for recommendations derived from this game id. The
+    // backend will prefer IGDB's similar_games, then fall back to genre-based
+    // recommendations, then trending primitives as a final fallback.
+    if (!id) return;
+    setSimilarGames([]);
     fetch("/api/igdb/query", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode: "bulk", ids: fetchIds }),
+      body: JSON.stringify({ mode: "recommend", id: Number(id), limit: 12 }),
     })
-      .then(async (r) => (r.ok ? r.json() : []))
+      .then(async (r) => {
+        if (!r.ok) throw new Error(await r.text());
+        return r.json();
+      })
       .then((data) => setSimilarGames(data ?? []))
       .catch(() => setSimilarGames([]));
-  }, [game?.similar_games]);
+  }, [id]);
 
   /* derived */
   const trailer = useMemo(() => firstYouTube(game?.videos), [game]);
@@ -295,17 +297,16 @@ export default function GameDetails() {
                 <Chip key={`g-${g}`}>{g}</Chip>
               ))}
             </div>
-            {platforms.length > 0 && (
-              <div className="mt-3 flex flex-wrap items-center gap-2 text-sm text-neutral-300">
+            {game.platforms && game.platforms.length > 0 && (
+              <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-neutral-300">
                 <span className="text-neutral-400">Platforms:</span>
-                {platforms.map((p) => (
-                  <span
-                    key={`p-${p}`}
-                    className="rounded-md bg-neutral-900/60 border border-neutral-800 px-2 py-0.5"
-                  >
-                    {p}
-                  </span>
-                ))}
+                <div className="flex flex-wrap items-center gap-2">
+                  {game.platforms.map((p: any) => (
+                    <span key={p.id ?? p.name} className="rounded-md bg-neutral-900/60 border border-neutral-800 px-2 py-0.5">
+                      {p.name}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
           </Section>
@@ -428,6 +429,27 @@ export default function GameDetails() {
               </summary>
               <p className="mt-3 max-w-4xl whitespace-pre-wrap text-neutral-300">{game.storyline}</p>
             </details>
+          </Section>
+        )}
+
+        {/* Recommended / Similar games (from backend recommend mode) */}
+        {similarGames && similarGames.length > 0 && (
+          <Section title="Recommended">
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {similarGames.map((g: any) => (
+                <GameCard
+                  key={g.id}
+                  id={g.id}
+                  name={g.name}
+                  cover={g.cover ?? null}
+                  first_release_date={g.first_release_date}
+                  platforms={g.platforms}
+                  genres={g.genres}
+                  total_rating={g.aggregated_rating ?? g.total_rating}
+                  total_rating_count={g.total_rating_count}
+                />
+              ))}
+            </div>
           </Section>
         )}
       </div>

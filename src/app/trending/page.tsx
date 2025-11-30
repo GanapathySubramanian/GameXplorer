@@ -41,8 +41,16 @@ export default function Trending() {
 			});
 			if (!r.ok) throw new Error(await r.text());
 			const data = await r.json();
-			if (append) setGames((prev) => [...prev, ...(data ?? [])]);
-			else setGames(data ?? []);
+			if (append) {
+				setGames((prev) => {
+					// Deduplicate by game ID to prevent duplicate key errors
+					const existingIds = new Set(prev.map(g => g.id));
+					const newGames = (data ?? []).filter((g: Game) => !existingIds.has(g.id));
+					return [...prev, ...newGames];
+				});
+			} else {
+				setGames(data ?? []);
+			}
 			setHasMore((data ?? []).length === LIMIT);
 		} catch (e) {
 			if (!append) setGames([]);
