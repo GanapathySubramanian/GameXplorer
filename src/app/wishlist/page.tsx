@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useWishlist, WishlistStatus } from "@/context/wishlist";
 
 const COLUMNS: { key: WishlistStatus; title: string }[] = [
-  { key: "wishlist", title: "Yet to play" },
+  { key: "wishlist", title: "To play" },
   { key: "playing", title: "Playing" },
   { key: "completed", title: "Completed" },
 ];
