@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import GameCard from "@/components/common/GameCard";
 import Icon from "@/components/common/Icon";
@@ -16,7 +16,7 @@ type Game = {
   total_rating_count?: number;
 };
 
-export default function Search() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const initialQ = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initialQ);
@@ -279,5 +279,28 @@ export default function Search() {
       {/* sentinel for infinite scroll */}
       <div ref={sentinelRef} />
     </main>
+  );
+}
+
+export default function Search() {
+  return (
+    <Suspense fallback={
+      <main className="mx-auto max-w-7xl px-4 md:px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
+            Search Games
+          </h1>
+          <p className="text-neutral-400">
+            Search from thousands of games in the IGDB database
+          </p>
+        </div>
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="w-8 h-8 border-3 border-neutral-700 border-t-neutral-300 rounded-full animate-spin mb-4" />
+          <p className="text-neutral-400 text-sm">Loading...</p>
+        </div>
+      </main>
+    }>
+      <SearchContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import Lightbox from "@/components/common/Lightbox";
 import GameCard from "@/components/common/GameCard";
 import { useWishlist } from "@/context/wishlist";
@@ -138,8 +138,8 @@ function WishlistVaultActions({ game }: { game: GameDetail }) {
   );
 }
 
-/* ---------- Page ---------- */
-export default function GameDetails() {
+/* ---------- Page Content Component ---------- */
+function GameDetailsContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
@@ -339,7 +339,6 @@ export default function GameDetails() {
                   alt="Screenshot"
                   className="h-48 w-full rounded-xl border border-neutral-800 object-cover cursor-zoom-in"
                   loading="lazy"
-                  onClick={() => setLightboxUrl(getHighRes(s.url))}
                 />
               ))}
             </div>
@@ -454,5 +453,26 @@ export default function GameDetails() {
         )}
       </div>
     </main>
+  );
+}
+
+/* ---------- Page Wrapper with Suspense ---------- */
+export default function GameDetails() {
+  return (
+    <Suspense fallback={
+      <main className="mx-auto max-w-6xl p-6">
+        <div className="animate-pulse space-y-6">
+          <div className="h-48 rounded-2xl bg-neutral-900" />
+          <div className="h-6 w-1/3 rounded bg-neutral-900" />
+          <div className="grid grid-cols-3 gap-3">
+            <div className="h-20 rounded bg-neutral-900" />
+            <div className="h-20 rounded bg-neutral-900" />
+            <div className="h-20 rounded bg-neutral-900" />
+          </div>
+        </div>
+      </main>
+    }>
+      <GameDetailsContent />
+    </Suspense>
   );
 }

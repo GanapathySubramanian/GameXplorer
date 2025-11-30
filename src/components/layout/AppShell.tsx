@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import SearchBox from "@/components/common/SearchBox";
 import ScrollToTop from "@/components/common/ScrollToTop";
 
@@ -59,9 +60,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </button>
 
           {/* Logo */}
-          <a href="/" className="text-lg font-bold tracking-tight whitespace-nowrap">
+          <Link href="/" className="text-lg font-bold tracking-tight whitespace-nowrap">
             GameXplorer
-          </a>
+          </Link>
 
           {/* Search Box */}
           <div className="flex-1 ml-auto">
@@ -73,14 +74,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         <div className="hidden md:grid md:grid-cols-3 items-center gap-6 w-[100%]">
           {/* Left Column: Logo */}
           <div className="flex items-center justify-start">
-            <a href="/" className="text-xl font-bold tracking-tight whitespace-nowrap">
+            <Link href="/" className="text-xl font-bold tracking-tight whitespace-nowrap">
               GameXplorer
-            </a>
+            </Link>
           </div>
 
           {/* Center Column: Navigation */}
           <nav className="flex items-center gap-1 justify-center">
-            <a 
+            <Link 
               href="/" 
               className={`nav-link px-3 py-2 rounded-lg transition-colors text-sm ${
                 isActive("/") 
@@ -89,8 +90,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               }`}
             >
               Home
-            </a>
-            <a 
+            </Link>
+            <Link 
               href="/trending" 
               className={`nav-link px-3 py-2 rounded-lg transition-colors text-sm ${
                 isActive("/trending") 
@@ -99,8 +100,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               }`}
             >
               Trending
-            </a>
-            <a 
+            </Link>
+            <Link 
               href="/vault" 
               className={`nav-link px-3 py-2 rounded-lg transition-colors text-sm ${
                 isActive("/vault") 
@@ -109,8 +110,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               }`}
             >
               Vault
-            </a>
-            <a 
+            </Link>
+            <Link 
               href="/wishlist" 
               className={`nav-link px-3 py-2 rounded-lg transition-colors text-sm ${
                 isActive("/wishlist") 
@@ -119,7 +120,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               }`}
             >
               Wishlist
-            </a>
+            </Link>
           </nav>
 
           {/* Right Column: Search Box */}
@@ -170,7 +171,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
           {/* Navigation Links */}
           <nav className="flex flex-col p-4 gap-2">
-            <a
+            <Link
               href="/"
               className={`px-4 py-3 rounded-lg transition-colors ${
                 isActive("/")
@@ -180,8 +181,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               onClick={() => setMenuOpen(false)}
             >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               href="/trending"
               className={`px-4 py-3 rounded-lg transition-colors ${
                 isActive("/trending")
@@ -191,8 +192,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               onClick={() => setMenuOpen(false)}
             >
               Trending
-            </a>
-            <a
+            </Link>
+            <Link
               href="/vault"
               className={`px-4 py-3 rounded-lg transition-colors ${
                 isActive("/vault")
@@ -202,8 +203,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               onClick={() => setMenuOpen(false)}
             >
               Vault
-            </a>
-            <a
+            </Link>
+            <Link
               href="/wishlist"
               className={`px-4 py-3 rounded-lg transition-colors ${
                 isActive("/wishlist")
@@ -213,7 +214,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               onClick={() => setMenuOpen(false)}
             >
               Wishlist
-            </a>
+            </Link>
           </nav>
         </div>
       </div>
